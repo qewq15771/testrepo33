@@ -48,7 +48,7 @@ import { Helper } from "./viewmodels/helper.class";
             {{translations.compareHistory}}
             <select [(ngModel)]="settings.historyComparisionDate" (ngModelChange)="updateCurrentHistoricCoverage()">
               <option value="">{{translations.date}}</option>
-              <option *ngFor="let time of historicCoverageExecutionTimes" [value]="time">{{time}}</option>
+              <option *ngFor="var time of historicCoverageExecutionTimes" [value]="time">{{time}}</option>
             </select>
           </div>
           <br *ngIf="settings.historyComparisionDate !== ''" />
@@ -107,7 +107,7 @@ import { Helper } from "./viewmodels/helper.class";
           <col class="column70" *ngIf="methodCoverageAvailable && settings.showFullMethodCoverage">
           <col class="column98" *ngIf="methodCoverageAvailable && settings.showFullMethodCoverage">
           <col class="column112" *ngIf="methodCoverageAvailable && settings.showFullMethodCoverage">
-          <col class="column112" *ngFor="let metric of settings.visibleMetrics">
+          <col class="column112" *ngFor="var metric of settings.visibleMetrics">
         </colgroup>
         <thead>
           <tr class="header">
@@ -201,7 +201,7 @@ import { Helper } from "./viewmodels/helper.class";
                   [ngClass]="{'icon-up-dir_active': settings.sortBy === 'methodfullcoverage' && settings.sortOrder === 'asc',
                   'icon-down-dir_active': settings.sortBy === 'methodfullcoverage' && settings.sortOrder === 'desc',
                   'icon-up-down-dir': settings.sortBy !== 'methodfullcoverage'}"></i>{{translations.percentage}}</a></th>
-            <th *ngFor="let metric of settings.visibleMetrics">
+            <th *ngFor="var metric of settings.visibleMetrics">
               <a href="#" (click)="updateSorting(metric.abbreviation, $event)"><i
                   [ngClass]="{'icon-up-dir_active': settings.sortBy === metric.abbreviation && settings.sortOrder === 'asc',
                   'icon-down-dir_active': settings.sortBy === metric.abbreviation && settings.sortOrder === 'desc',
@@ -210,7 +210,7 @@ import { Helper } from "./viewmodels/helper.class";
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let element of codeElements">
+          <ng-container *ngFor="var element of codeElements">
             <tr *ngIf="element.visible(settings)"
               codeelement-row
               [element]="element"
@@ -221,7 +221,7 @@ import { Helper } from "./viewmodels/helper.class";
               [methodFullCoverageAvailable]="methodCoverageAvailable && settings.showFullMethodCoverage"
               [visibleMetrics]="settings.visibleMetrics">
             </tr>
-            <ng-container *ngFor="let clazz of element.classes">
+            <ng-container *ngFor="var clazz of element.classes">
               <tr *ngIf="!element.collapsed
                 && clazz.visible(settings)"
                 class-row [clazz]="clazz"
@@ -234,7 +234,7 @@ import { Helper } from "./viewmodels/helper.class";
                   [historyComparisionDate]="settings.historyComparisionDate">
               </tr>
             </ng-container>
-            <ng-container *ngFor="let subElement of element.subElements">
+            <ng-container *ngFor="var subElement of element.subElements">
               <ng-container *ngIf="!element.collapsed
                 && subElement.visible(settings)">
                <tr class="namespace"
@@ -247,7 +247,7 @@ import { Helper } from "./viewmodels/helper.class";
                  [methodFullCoverageAvailable]="methodCoverageAvailable && settings.showFullMethodCoverage"
                  [visibleMetrics]="settings.visibleMetrics">
                 </tr>
-                <ng-container *ngFor="let clazz of subElement.classes">
+                <ng-container *ngFor="var clazz of subElement.classes">
                   <tr class="namespace" *ngIf="!subElement.collapsed
                    && clazz.visible(settings)"
                    class-row [clazz]="clazz"
@@ -306,7 +306,7 @@ export class CoverageInfoComponent {
     this.translations = (<any>this.window).translations;
     Helper.maximumDecimalPlacesForCoverageQuotas = (<any>this.window).maximumDecimalPlacesForCoverageQuotas;
 
-    let restoredFromHistory: boolean = false;
+    var restoredFromHistory: boolean = false;
 
     if (this.window.history !== undefined
       && this.window.history.replaceState !== undefined
@@ -317,11 +317,11 @@ export class CoverageInfoComponent {
         restoredFromHistory = true;
         this.settings = JSON.parse(JSON.stringify(this.window.history.state.coverageInfoSettings));
     } else {
-      let groupingMaximum: number = 0;
-      let assemblies: Assembly[] = (<any>this.window).assemblies;
+      var groupingMaximum: number = 0;
+      var assemblies: Assembly[] = (<any>this.window).assemblies;
 
-      for (let i: number = 0; i < assemblies.length; i++) {
-        for (let j: number = 0; j < assemblies[i].classes.length; j++) {
+      for (var i: number = 0; i < assemblies.length; i++) {
+        for (var j: number = 0; j < assemblies[i].classes.length; j++) {
           groupingMaximum = Math.max(
             groupingMaximum,
             (assemblies[i].classes[j].name.match(/\.|\\/g) || []).length);
@@ -356,7 +356,7 @@ export class CoverageInfoComponent {
     if (this.window.history !== undefined && this.window.history.replaceState !== undefined) {
       console.log("Coverage info: Updating history", this.settings);
 
-      let globalHistoryState: GlobalHistoryState = new GlobalHistoryState();
+      var globalHistoryState: GlobalHistoryState = new GlobalHistoryState();
 
       if (window.history.state !== null) {
         globalHistoryState = JSON.parse(JSON.stringify(this.window.history.state));
@@ -368,47 +368,47 @@ export class CoverageInfoComponent {
   }
 
   updateCoverageInfo(): void {
-    let start: number = new Date().getTime();
+    var start: number = new Date().getTime();
 
-    let assemblies: Assembly[] = (<any>this.window).assemblies;
+    var assemblies: Assembly[] = (<any>this.window).assemblies;
 
-    let codeElements: CodeElementViewModel[] = [];
-    let numberOfClasses: number = 0;
+    var codeElements: CodeElementViewModel[] = [];
+    var numberOfClasses: number = 0;
 
     if (this.settings.grouping === 0) { // group by assembly
-        for (let i: number = 0; i < assemblies.length; i++) {
-            let assemblyElement: CodeElementViewModel = new CodeElementViewModel(assemblies[i].name, null);
+        for (var i: number = 0; i < assemblies.length; i++) {
+            var assemblyElement: CodeElementViewModel = new CodeElementViewModel(assemblies[i].name, null);
             codeElements.push(assemblyElement);
 
-            for (let j: number = 0; j < assemblies[i].classes.length; j++) {
+            for (var j: number = 0; j < assemblies[i].classes.length; j++) {
                 assemblyElement.insertClass(new ClassViewModel(assemblies[i].classes[j], this.queryString), null);
                 numberOfClasses++;
             }
         }
     } else if (this.settings.grouping === -1) { // no grouping
-        let assemblyElement: CodeElementViewModel = new CodeElementViewModel(this.translations.all, null);
+        var assemblyElement: CodeElementViewModel = new CodeElementViewModel(this.translations.all, null);
         codeElements.push(assemblyElement);
 
-        for (let i: number = 0; i < assemblies.length; i++) {
-            for (let j: number = 0; j < assemblies[i].classes.length; j++) {
+        for (var i: number = 0; i < assemblies.length; i++) {
+            for (var j: number = 0; j < assemblies[i].classes.length; j++) {
                 assemblyElement.insertClass(new ClassViewModel(assemblies[i].classes[j], this.queryString), null);
                 numberOfClasses++;
             }
         }
     } else { // group by assembly and namespace
-        for (let i: number = 0; i < assemblies.length; i++) {
-          let assemblyElement: CodeElementViewModel = new CodeElementViewModel(assemblies[i].name, null);
+        for (var i: number = 0; i < assemblies.length; i++) {
+          var assemblyElement: CodeElementViewModel = new CodeElementViewModel(assemblies[i].name, null);
           codeElements.push(assemblyElement);
 
-            for (let j: number = 0; j < assemblies[i].classes.length; j++) {
+            for (var j: number = 0; j < assemblies[i].classes.length; j++) {
                 assemblyElement.insertClass(new ClassViewModel(assemblies[i].classes[j], this.queryString), this.settings.grouping);
                 numberOfClasses++;
             }
         }
     }
 
-    let smaller: number = -1;
-    let bigger: number = 1;
+    var smaller: number = -1;
+    var bigger: number = 1;
 
     if (this.settings.sortBy === "name") {
         smaller = this.settings.sortOrder === "asc" ? -1 : 1;
@@ -421,7 +421,7 @@ export class CoverageInfoComponent {
 
     CodeElementViewModel.sortCodeElementViewModels(codeElements, this.settings.sortBy, this.settings.sortOrder === "asc");
 
-    for (let i: number = 0; i < codeElements.length; i++) {
+    for (var i: number = 0; i < codeElements.length; i++) {
       codeElements[i].changeSorting(this.settings.sortBy, this.settings.sortOrder === "asc");
     }
 
@@ -436,9 +436,9 @@ export class CoverageInfoComponent {
   }
 
   updateCurrentHistoricCoverage(): void {
-    let start: number = new Date().getTime();
+    var start: number = new Date().getTime();
 
-    for (let i: number = 0; i < this.codeElements.length; i++) {
+    for (var i: number = 0; i < this.codeElements.length; i++) {
       this.codeElements[i].updateCurrentHistoricCoverage(this.settings.historyComparisionDate);
     }
 
@@ -448,7 +448,7 @@ export class CoverageInfoComponent {
   collapseAll($event: Event): void {
     $event.preventDefault();
 
-    for (let i: number = 0; i < this.codeElements.length; i++) {
+    for (var i: number = 0; i < this.codeElements.length; i++) {
       this.codeElements[i].collapse();
     }
   }
@@ -456,7 +456,7 @@ export class CoverageInfoComponent {
   expandAll($event: Event): void {
     $event.preventDefault();
 
-    for (let i: number = 0; i < this.codeElements.length; i++) {
+    for (var i: number = 0; i < this.codeElements.length; i++) {
       this.codeElements[i].expand();
     }
   }
@@ -475,7 +475,7 @@ export class CoverageInfoComponent {
     console.log(`Updating sort column: '${this.settings.sortBy}' (${this.settings.sortOrder})`);
     CodeElementViewModel.sortCodeElementViewModels(this.codeElements, this.settings.sortBy, this.settings.sortOrder === "asc");
 
-    for (let i: number = 0; i < this.codeElements.length; i++) {
+    for (var i: number = 0; i < this.codeElements.length; i++) {
       this.codeElements[i].changeSorting(this.settings.sortBy, this.settings.sortOrder === "asc");
     }
   }
@@ -483,8 +483,8 @@ export class CoverageInfoComponent {
   saveCollapseState(): void {
     this.settings.collapseStates = [];
 
-    let saveCollapseStateRecursive:(elements: CodeElementViewModel[]) => void = (elements: CodeElementViewModel[]) => {
-      for (let i: number = 0; i < elements.length; i++) {
+    var saveCollapseStateRecursive:(elements: CodeElementViewModel[]) => void = (elements: CodeElementViewModel[]) => {
+      for (var i: number = 0; i < elements.length; i++) {
         this.settings.collapseStates.push(elements[i].collapsed);
 
         saveCollapseStateRecursive(elements[i].subElements);
@@ -495,11 +495,11 @@ export class CoverageInfoComponent {
   }
 
   restoreCollapseState(): void {
-    let counter: number = 0;
+    var counter: number = 0;
 
-    let restoreCollapseStateRecursive:(elements: CodeElementViewModel[]) => void
+    var restoreCollapseStateRecursive:(elements: CodeElementViewModel[]) => void
       = (elements: CodeElementViewModel[]) => {
-      for (let i: number = 0; i < elements.length; i++) {
+      for (var i: number = 0; i < elements.length; i++) {
         if (this.settings.collapseStates.length > counter) {
           elements[i].collapsed = this.settings.collapseStates[counter];
         }
