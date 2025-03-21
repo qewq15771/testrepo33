@@ -20,7 +20,7 @@ async function executeReportGenerator(): Promise<number> {
     .arg('-tag:' + (tl.getInput('tag') || ''))
     .arg('-license:' + (tl.getInput('license') || ''));
 
-    const customSettings = (tl.getInput('customSettings') || '');
+    var customSettings = (tl.getInput('customSettings') || '');
 
     if (customSettings.length > 0) {
         customSettings.split(/[,;]/).forEach(setting => {
@@ -32,7 +32,7 @@ async function executeReportGenerator(): Promise<number> {
 }
 
 async function run() {
-    const publishCodeCoverageResults = ((tl.getInput('publishCodeCoverageResults') || 'false') + '').toLowerCase() === 'true';
+    var publishCodeCoverageResults = ((tl.getInput('publishCodeCoverageResults') || 'false') + '').toLowerCase() === 'true';
     try {
         tl.setResourcePath(path.join( __dirname, 'task.json'));
 
@@ -67,16 +67,16 @@ function publishCodeCoverageReport() {
         return;
     }
 
-    const targetdir = resolvePathToSingleItem(tl.getInput('targetdir') || '');
-    const reporttypes = (tl.getInput('reporttypes') || '').toLowerCase().split(/[,;]/);
-    const createSubdirectoryForAllReportTypes = (tl.getInput('customSettings') || '').toLowerCase().indexOf('createsubdirectoryforallreporttypes=true') > -1;
+    var targetdir = resolvePathToSingleItem(tl.getInput('targetdir') || '');
+    var reporttypes = (tl.getInput('reporttypes') || '').toLowerCase().split(/[,;]/);
+    var createSubdirectoryForAllReportTypes = (tl.getInput('customSettings') || '').toLowerCase().indexOf('createsubdirectoryforallreporttypes=true') > -1;
 
     if (!reporttypes.find(r => r === 'cobertura')) {
         tl.setResult(tl.TaskResult.Failed, tl.loc('PublishCodeCoverageResultsRequiresCobertura'));
         return;
     }
 
-    const supportedReportTypes = ['HtmlInline_AzurePipelines', 'HtmlInline_AzurePipelines_Light', 'HtmlInline_AzurePipelines_Dark',
+    var supportedReportTypes = ['HtmlInline_AzurePipelines', 'HtmlInline_AzurePipelines_Light', 'HtmlInline_AzurePipelines_Dark',
         'Html', 'Html_Light', 'Html_Dark', 'Html_BlueRed', 'HtmlInline', 'HtmlSummary', 'Html_BlueRed_Summary',
         'HtmlChart'];
     let htmlReportType = '';
@@ -94,7 +94,7 @@ function publishCodeCoverageReport() {
     }
     
     //See: https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishCodeCoverageResultsV1/publishcodecoverageresults.ts
-    const ccPublisher = new tl.CodeCoveragePublisher();
+    var ccPublisher = new tl.CodeCoveragePublisher();
     ccPublisher.publish(
         'Cobertura', 
         targetdir + (createSubdirectoryForAllReportTypes ? '/Cobertura' : '') + '/Cobertura.xml',
@@ -115,8 +115,8 @@ function resolvePathToSingleItem(pathInput: string): string {
             pathInput = pathInput.slice(0, -1);
         }
         // Resolve matches of the pathInput pattern
-        const findOptions: tl.FindOptions = { allowBrokenSymbolicLinks: false, followSymbolicLinks: false, followSpecifiedSymbolicLink: false };
-        const pathMatches: string[] = tl.findMatch(
+        var findOptions: tl.FindOptions = { allowBrokenSymbolicLinks: false, followSymbolicLinks: false, followSpecifiedSymbolicLink: false };
+        var pathMatches: string[] = tl.findMatch(
             tl.getVariable('System.DefaultWorkingDirectory'),
             pathInput,
             findOptions);
