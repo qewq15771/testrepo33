@@ -33,7 +33,7 @@ import { CodeElementViewModel } from "./viewmodels/codelement-viewmodel.class";
 <th class="right" *ngIf="methodFullCoverageAvailable">
   <coverage-bar [percentage]="element.methodFullCoverage"></coverage-bar>
 </th>
-<th class="right" *ngFor="let metric of visibleMetrics"></th>`,
+<th class="right" *ngFor="const metric of visibleMetrics"></th>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
