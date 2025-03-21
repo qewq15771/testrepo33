@@ -2,7 +2,7 @@ import path = require('path');
 import tl = require('azure-pipelines-task-lib/task');
 
 async function executeReportGenerator(): Promise<number> {
-    var tool = tl.tool('dotnet')
+    const tool = tl.tool('dotnet')
     .arg(path.join(__dirname, 'tools/net8.0/ReportGenerator.dll'))
     .arg('-reports:' + (tl.getInput('reports') || ''))
     .arg('-targetdir:' + (tl.getInput('targetdir') || ''))
@@ -20,7 +20,7 @@ async function executeReportGenerator(): Promise<number> {
     .arg('-tag:' + (tl.getInput('tag') || ''))
     .arg('-license:' + (tl.getInput('license') || ''));
 
-    var customSettings = (tl.getInput('customSettings') || '');
+    const customSettings = (tl.getInput('customSettings') || '');
 
     if (customSettings.length > 0) {
         customSettings.split(/[,;]/).forEach(setting => {
@@ -32,7 +32,7 @@ async function executeReportGenerator(): Promise<number> {
 }
 
 async function run() {
-    var publishCodeCoverageResults = ((tl.getInput('publishCodeCoverageResults') || 'false') + '').toLowerCase() === 'true';
+    const publishCodeCoverageResults = ((tl.getInput('publishCodeCoverageResults') || 'false') + '').toLowerCase() === 'true';
     try {
         tl.setResourcePath(path.join( __dirname, 'task.json'));
 
@@ -67,16 +67,16 @@ function publishCodeCoverageReport() {
         return;
     }
 
-    var targetdir = resolvePathToSingleItem(tl.getInput('targetdir') || '');
-    var reporttypes = (tl.getInput('reporttypes') || '').toLowerCase().split(/[,;]/);
-    var createSubdirectoryForAllReportTypes = (tl.getInput('customSettings') || '').toLowerCase().indexOf('createsubdirectoryforallreporttypes=true') > -1;
+    const targetdir = resolvePathToSingleItem(tl.getInput('targetdir') || '');
+    const reporttypes = (tl.getInput('reporttypes') || '').toLowerCase().split(/[,;]/);
+    const createSubdirectoryForAllReportTypes = (tl.getInput('customSettings') || '').toLowerCase().indexOf('createsubdirectoryforallreporttypes=true') > -1;
 
     if (!reporttypes.find(r => r === 'cobertura')) {
         tl.setResult(tl.TaskResult.Failed, tl.loc('PublishCodeCoverageResultsRequiresCobertura'));
         return;
     }
 
-    var supportedReportTypes = ['HtmlInline_AzurePipelines', 'HtmlInline_AzurePipelines_Light', 'HtmlInline_AzurePipelines_Dark',
+    const supportedReportTypes = ['HtmlInline_AzurePipelines', 'HtmlInline_AzurePipelines_Light', 'HtmlInline_AzurePipelines_Dark',
         'Html', 'Html_Light', 'Html_Dark', 'Html_BlueRed', 'HtmlInline', 'HtmlSummary', 'Html_BlueRed_Summary',
         'HtmlChart'];
     let htmlReportType = '';
@@ -94,7 +94,7 @@ function publishCodeCoverageReport() {
     }
     
     //See: https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishCodeCoverageResultsV1/publishcodecoverageresults.ts
-    var ccPublisher = new tl.CodeCoveragePublisher();
+    const ccPublisher = new tl.CodeCoveragePublisher();
     ccPublisher.publish(
         'Cobertura', 
         targetdir + (createSubdirectoryForAllReportTypes ? '/Cobertura' : '') + '/Cobertura.xml',
@@ -115,8 +115,8 @@ function resolvePathToSingleItem(pathInput: string): string {
             pathInput = pathInput.slice(0, -1);
         }
         // Resolve matches of the pathInput pattern
-        var findOptions: tl.FindOptions = { allowBrokenSymbolicLinks: false, followSymbolicLinks: false, followSpecifiedSymbolicLink: false };
-        var pathMatches: string[] = tl.findMatch(
+        const findOptions: tl.FindOptions = { allowBrokenSymbolicLinks: false, followSymbolicLinks: false, followSpecifiedSymbolicLink: false };
+        const pathMatches: string[] = tl.findMatch(
             tl.getVariable('System.DefaultWorkingDirectory'),
             pathInput,
             findOptions);
