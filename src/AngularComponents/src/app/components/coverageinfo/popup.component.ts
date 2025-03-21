@@ -24,7 +24,7 @@ import { Metric } from "./data/metric.class";
       <br />
       <br/>
       <b>{{translations.metrics}}</b><pro-button *ngIf="!methodCoverageAvailable" [translations]="translations"></pro-button>
-      <div class="mt-1" *ngFor="let metric of metrics">
+      <div class="mt-1" *ngFor="const metric of metrics">
         <label><input type="checkbox" [checked]="isMetricSelected(metric)" (change)="toggleMetric(metric)" [disabled]="!methodCoverageAvailable" /> {{ metric.name }}</label>&nbsp;<a [href]="metric.explanationUrl" *ngIf="metric.explanationUrl" target="_blank"><i class="icon-info-circled"></i></a>
       </div>
     </ng-container>
@@ -64,7 +64,7 @@ export class PopupComponent {
     }
 
     toggleMetric(metric: Metric) {
-      let match = this.visibleMetrics.find(m => m.name === metric.name);
+      const match = this.visibleMetrics.find(m => m.name === metric.name);
 
       if (match) {
         this.visibleMetrics.splice(this.visibleMetrics.indexOf(match), 1);
