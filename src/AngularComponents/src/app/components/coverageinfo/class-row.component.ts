@@ -190,7 +190,7 @@ import { ClassViewModel } from "./viewmodels/class-viewmodel.class";
   </ng-container>
 </td>
 <td class="right" *ngIf="methodFullCoverageAvailable"><coverage-bar [percentage]="clazz.methodFullCoverage"></coverage-bar></td>
-<td class="right" *ngFor="const metric of visibleMetrics">{{ clazz.metrics[metric.abbreviation] }}</td>`,
+<td class="right" *ngFor="let metric of visibleMetrics">{{ clazz.metrics[metric.abbreviation] }}</td>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
