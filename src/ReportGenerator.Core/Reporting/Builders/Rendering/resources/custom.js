@@ -1,23 +1,23 @@
-let i, l, selectedLine = null;
+const i, l, selectedLine = null;
 
 /* Navigate to hash without browser history entry */
-let navigateToHash = function () {
+const navigateToHash = function () {
     if (window.history !== undefined && window.history.replaceState !== undefined) {
         window.history.replaceState(undefined, undefined, this.getAttribute("href"));
     }
 };
 
-let hashLinks = document.getElementsByClassName('navigatetohash');
+const hashLinks = document.getElementsByClassName('navigatetohash');
 for (i = 0, l = hashLinks.length; i < l; i++) {
     hashLinks[i].addEventListener('click', navigateToHash);
 }
 
 /* Switch test method */
-let switchTestMethod = function () {
-    let method = this.getAttribute("value");
+const switchTestMethod = function () {
+    const method = this.getAttribute("value");
     console.log("Selected test method: " + method);
 
-    let lines, i, l, coverageData, lineAnalysis, cells;
+    const lines, i, l, coverageData, lineAnalysis, cells;
 
     lines = document.querySelectorAll('.lineAnalysis tr');
 
@@ -40,13 +40,13 @@ let switchTestMethod = function () {
     }
 };
 
-let testMethods = document.getElementsByClassName('switchtestmethod');
+const testMethods = document.getElementsByClassName('switchtestmethod');
 for (i = 0, l = testMethods.length; i < l; i++) {
     testMethods[i].addEventListener('change', switchTestMethod);
 }
 
 /* Highlight test method by line */
-let toggleLine = function () {
+const toggleLine = function () {
     if (selectedLine === this) {
         selectedLine = null;
     } else {
@@ -57,14 +57,14 @@ let toggleLine = function () {
     }
     
 };
-let highlightTestMethods = function () {
+const highlightTestMethods = function () {
     if (selectedLine !== null) {
         return;
     }
 
-    let lineAnalysis;
-    let coverageData = JSON.parse(this.getAttribute('data-coverage').replace(/'/g, '"'));
-    let testMethods = document.getElementsByClassName('testmethod');
+    const lineAnalysis;
+    const coverageData = JSON.parse(this.getAttribute('data-coverage').replace(/'/g, '"'));
+    const testMethods = document.getElementsByClassName('testmethod');
 
     for (i = 0, l = testMethods.length; i < l; i++) {
         lineAnalysis = coverageData[testMethods[i].id];
@@ -75,17 +75,17 @@ let highlightTestMethods = function () {
         }
     }
 };
-let unhighlightTestMethods = function () {
+const unhighlightTestMethods = function () {
     if (selectedLine !== null) {
         return;
     }
 
-    let testMethods = document.getElementsByClassName('testmethod');
+    const testMethods = document.getElementsByClassName('testmethod');
     for (i = 0, l = testMethods.length; i < l; i++) {
         testMethods[i].className = testMethods[i].className.replace(/\s*light.+/g, "");
     }
 };
-let coverableLines = document.getElementsByClassName('coverableline');
+const coverableLines = document.getElementsByClassName('coverableline');
 for (i = 0, l = coverableLines.length; i < l; i++) {
     coverableLines[i].addEventListener('click', toggleLine);
     coverableLines[i].addEventListener('mouseenter', highlightTestMethods);
@@ -93,14 +93,14 @@ for (i = 0, l = coverableLines.length; i < l; i++) {
 }
 
 /* History charts */
-let renderChart = function (chart) {
+const renderChart = function (chart) {
     // Remove current children (e.g. PNG placeholder)
     while (chart.firstChild) {
         chart.firstChild.remove();
     }
 
-    let chartData = window[chart.getAttribute('data-data')];
-    let options = {
+    const chartData = window[chart.getAttribute('data-data')];
+    const options = {
         axisY: {
             type: undefined,
             onlyInteger: true
@@ -112,17 +112,17 @@ let renderChart = function (chart) {
         onlyInteger: true,
         fullWidth: true
     };
-    let lineChart = new Chartist.Line(chart, {
+    const lineChart = new Chartist.Line(chart, {
         labels: [],
         series: chartData.series
     }, options);
 
     /* Zoom */
-    let zoomButtonDiv = document.createElement("div");
+    const zoomButtonDiv = document.createElement("div");
     zoomButtonDiv.className = "toggleZoom";
-    let zoomButtonLink = document.createElement("a");
+    const zoomButtonLink = document.createElement("a");
     zoomButtonLink.setAttribute("href", "");
-    let zoomButtonText = document.createElement("i");
+    const zoomButtonText = document.createElement("i");
     zoomButtonText.className = "icon-search-plus";
 
     zoomButtonLink.appendChild(zoomButtonText);
@@ -144,23 +144,23 @@ let renderChart = function (chart) {
         lineChart.update(null, options);
     });
 
-    let tooltip = document.createElement("div");
+    const tooltip = document.createElement("div");
     tooltip.className = "tooltip";
 
     chart.appendChild(tooltip);
 
     /* Tooltips */
-    let showToolTip = function () {
-        let index = this.getAttribute('ct:meta');
+    const showToolTip = function () {
+        const index = this.getAttribute('ct:meta');
 
         tooltip.innerHTML = chartData.tooltips[index];
         tooltip.style.display = 'block';
     };
 
-    let moveToolTip = function (event) {
-        let box = chart.getBoundingClientRect();
-        let left = event.pageX - box.left - window.pageXOffset;
-        let top = event.pageY - box.top - window.pageYOffset;
+    const moveToolTip = function (event) {
+        const box = chart.getBoundingClientRect();
+        const left = event.pageX - box.left - window.pageXOffset;
+        const top = event.pageY - box.top - window.pageYOffset;
 
         left = left + 20;
         top = top - tooltip.offsetHeight / 2;
@@ -181,13 +181,13 @@ let renderChart = function (chart) {
         tooltip.style.top = top + 'px';
     };
 
-    let hideToolTip = function () {
+    const hideToolTip = function () {
         tooltip.style.display = 'none';
     };
     chart.addEventListener('mousemove', moveToolTip);
 
     lineChart.on('created', function () {
-        let chartPoints = chart.getElementsByClassName('ct-point');
+        const chartPoints = chart.getElementsByClassName('ct-point');
         for (i = 0, l = chartPoints.length; i < l; i++) {
             chartPoints[i].addEventListener('mousemove', showToolTip);
             chartPoints[i].addEventListener('mouseout', hideToolTip);
@@ -195,7 +195,7 @@ let renderChart = function (chart) {
     });
 };
 
-let charts = document.getElementsByClassName('historychart');
+const charts = document.getElementsByClassName('historychart');
 for (i = 0, l = charts.length; i < l; i++) {
     renderChart(charts[i]);
 }Improve database - adding new feature
