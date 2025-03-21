@@ -13,7 +13,7 @@ import { RiskHotspotsSettings } from "./data/riskhotspots-settings.class";
         <div>
           <select [(ngModel)]="settings.assembly" name="assembly" (ngModelChange)="updateRiskHotpots()">
             <option value="">{{translations.assembly}}</option>
-            <option *ngFor="let assembly of assemblies" [value]="assembly">{{assembly}}</option>
+            <option *ngFor="var assembly of assemblies" [value]="assembly">{{assembly}}</option>
           </select>
         </div>
         <div class="col-center">
@@ -39,7 +39,7 @@ import { RiskHotspotsSettings } from "./data/riskhotspots-settings.class";
             <col class="column-min-200">
             <col class="column-min-200">
             <col class="column-min-200">
-            <col class="column105" *ngFor="let riskHotspotMetric of riskHotspotMetrics">
+            <col class="column105" *ngFor="var riskHotspotMetric of riskHotspotMetrics">
           </colgroup>
           <thead>
             <tr>
@@ -55,7 +55,7 @@ import { RiskHotspotsSettings } from "./data/riskhotspots-settings.class";
               [ngClass]="{'icon-up-dir_active': settings.sortBy === 'method' && settings.sortOrder === 'asc',
               'icon-down-dir_active': settings.sortBy === 'method' && settings.sortOrder === 'desc',
               'icon-up-down-dir': settings.sortBy !== 'method'}"></i>{{translations.method}}</a></th>
-              <th *ngFor="let riskHotspotMetric of riskHotspotMetrics; index as i">
+              <th *ngFor="var riskHotspotMetric of riskHotspotMetrics; index as i">
                 <a href="#" (click)="updateSorting('' + i, $event)"><i
                 [ngClass]="{'icon-up-dir_active': settings.sortBy === '' + i && settings.sortOrder === 'asc',
                 'icon-down-dir_active': settings.sortBy === '' + i && settings.sortOrder === 'desc',
@@ -65,7 +65,7 @@ import { RiskHotspotsSettings } from "./data/riskhotspots-settings.class";
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let riskHotspot of riskHotspots | slice:0:settings.numberOfRiskHotspots">
+            <tr *ngFor="var riskHotspot of riskHotspots | slice:0:settings.numberOfRiskHotspots">
               <td>{{riskHotspot.assembly}}</td>
               <td><a [href]="riskHotspot.reportPath + queryString">{{riskHotspot.class}}</a></td>
               <td [title]="riskHotspot.methodName">
@@ -73,7 +73,7 @@ import { RiskHotspotsSettings } from "./data/riskhotspots-settings.class";
                   {{riskHotspot.methodShortName}}
                 </a>
               </td>
-              <td class="right" *ngFor="let metric of riskHotspot.metrics"
+              <td class="right" *ngFor="var metric of riskHotspot.metrics"
                 [ngClass]="{'lightred': metric.exceeded, 'lightgreen': !metric.exceeded}">{{metric.value}}</td>
             </tr>
           </tbody>
@@ -129,7 +129,7 @@ export class RiskHotspotsComponent implements OnInit {
     if (this.window.history !== undefined && this.window.history.replaceState !== undefined) {
       console.log("Risk hotspots: Updating history", this.settings);
 
-      let globalHistoryState: GlobalHistoryState = new GlobalHistoryState();
+      var globalHistoryState: GlobalHistoryState = new GlobalHistoryState();
 
       if (window.history.state !== null) {
         globalHistoryState = JSON.parse(JSON.stringify(this.window.history.state));
@@ -145,9 +145,9 @@ export class RiskHotspotsComponent implements OnInit {
     this.totalNumberOfRiskHotspots = allRiskHotspots.length;
 
     if (this.assemblies.length === 0) {
-      let assemblies: string[] = [];
+      var assemblies: string[] = [];
 
-      for (let i: number = 0; i < allRiskHotspots.length; i++) {
+      for (var i: number = 0; i < allRiskHotspots.length; i++) {
         if (assemblies.indexOf(allRiskHotspots[i].assembly) === -1) {
           assemblies.push(allRiskHotspots[i].assembly);
         }
@@ -156,9 +156,9 @@ export class RiskHotspotsComponent implements OnInit {
       this.assemblies = assemblies.sort();
     }
 
-    let riskHotspots: RiskHotspot[] = [];
+    var riskHotspots: RiskHotspot[] = [];
 
-    for (let i: number = 0; i < allRiskHotspots.length; i++) {
+    for (var i: number = 0; i < allRiskHotspots.length; i++) {
         if (this.settings.filter !== "" && allRiskHotspots[i].class.toLowerCase().indexOf(this.settings.filter.toLowerCase()) === -1) {
             continue;
         }
@@ -170,8 +170,8 @@ export class RiskHotspotsComponent implements OnInit {
         riskHotspots.push(allRiskHotspots[i]);
     }
 
-    let smaller: number = this.settings.sortOrder === "asc" ? -1 : 1;
-    let bigger: number = this.settings.sortOrder === "asc" ? 1 : -1;
+    var smaller: number = this.settings.sortOrder === "asc" ? -1 : 1;
+    var bigger: number = this.settings.sortOrder === "asc" ? 1 : -1;
     if (this.settings.sortBy === "assembly") {
       riskHotspots.sort(function (left: RiskHotspot, right: RiskHotspot): number {
             return left.assembly === right.assembly ?
@@ -191,7 +191,7 @@ export class RiskHotspotsComponent implements OnInit {
                 : (left.methodShortName < right.methodShortName ? smaller : bigger);
         });
     } else if (this.settings.sortBy !== "") {
-        let metricIndex: number = parseInt(this.settings.sortBy, 10);
+        var metricIndex: number = parseInt(this.settings.sortBy, 10);
         riskHotspots.sort(function (left: RiskHotspot, right: RiskHotspot): number {
             return left.metrics[metricIndex].value === right.metrics[metricIndex].value ?
                 0
