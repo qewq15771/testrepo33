@@ -6,9 +6,9 @@ export class Helper {
     }
 
     static getNthOrLastIndexOf(text: string, substring: string, n: number): number {
-        const times: number = 0;
-        const index: number = -1;
-        const currentIndex: number = -1;
+        let times: number = 0;
+        let index: number = -1;
+        let currentIndex: number = -1;
 
         while (times < n) {
             currentIndex = text.indexOf(substring, index + 1);
