@@ -23,13 +23,13 @@ export class CodeElementViewModel extends ElementBase {
             return true;
         }
 
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             if (this.subElements[i].visible(settings)) {
                 return true;
             }
         }
 
-        for (let i: number = 0; i < this.classes.length; i++) {
+        for (var i: number = 0; i < this.classes.length; i++) {
             if (this.classes[i].visible(settings)) {
                 return true;
             }
@@ -56,22 +56,22 @@ export class CodeElementViewModel extends ElementBase {
             return;
         }
 
-        let groupingDotIndex: number = Helper.getNthOrLastIndexOf(clazz.name, ".", grouping);
+        var groupingDotIndex: number = Helper.getNthOrLastIndexOf(clazz.name, ".", grouping);
 
         if (groupingDotIndex === -1) {
             groupingDotIndex = Helper.getNthOrLastIndexOf(clazz.name, "\\", grouping);
         }
 
-        let groupedNamespace: string = groupingDotIndex === -1 ? "-" : clazz.name.substring(0, groupingDotIndex);
+        var groupedNamespace: string = groupingDotIndex === -1 ? "-" : clazz.name.substring(0, groupingDotIndex);
 
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             if (this.subElements[i].name === groupedNamespace) {
                 this.subElements[i].insertClass(clazz, null);
                 return;
             }
         }
 
-        let subNamespace: CodeElementViewModel = new CodeElementViewModel(groupedNamespace, this);
+        var subNamespace: CodeElementViewModel = new CodeElementViewModel(groupedNamespace, this);
         this.subElements.push(subNamespace);
         subNamespace.insertClass(clazz, null);
     }
@@ -79,7 +79,7 @@ export class CodeElementViewModel extends ElementBase {
     collapse(): void {
         this.collapsed = true;
 
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             this.subElements[i].collapse();
         }
     }
@@ -87,7 +87,7 @@ export class CodeElementViewModel extends ElementBase {
     expand(): void {
         this.collapsed = false;
 
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             this.subElements[i].expand();
         }
     }
@@ -99,18 +99,18 @@ export class CodeElementViewModel extends ElementBase {
     }
 
     updateCurrentHistoricCoverage(historyComparisionDate: string): void {
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             this.subElements[i].updateCurrentHistoricCoverage(historyComparisionDate);
         }
 
-        for (let i: number = 0; i < this.classes.length; i++) {
+        for (var i: number = 0; i < this.classes.length; i++) {
             this.classes[i].updateCurrentHistoricCoverage(historyComparisionDate);
         }
     }
 
     static sortCodeElementViewModels(elements: CodeElementViewModel[], sortBy: string, ascending: boolean): void {
-        let smaller: number = ascending ? -1 : 1;
-        let bigger: number = ascending ? 1 : -1;
+        var smaller: number = ascending ? -1 : 1;
+        var bigger: number = ascending ? 1 : -1;
 
         if (sortBy === "name") {
             elements.sort(function (left: CodeElementViewModel, right: CodeElementViewModel): number {
@@ -254,8 +254,8 @@ export class CodeElementViewModel extends ElementBase {
     changeSorting(sortBy: string, ascending: boolean): void {
        CodeElementViewModel.sortCodeElementViewModels(this.subElements, sortBy, ascending);
 
-        let smaller: number = ascending ? -1 : 1;
-        let bigger: number = ascending ? 1 : -1;
+        var smaller: number = ascending ? -1 : 1;
+        var bigger: number = ascending ? 1 : -1;
 
         if (sortBy === "name") {
             this.classes.sort(function (left: ClassViewModel, right: ClassViewModel): number {
@@ -379,7 +379,7 @@ export class CodeElementViewModel extends ElementBase {
             });
         }
 
-        for (let i: number = 0; i < this.subElements.length; i++) {
+        for (var i: number = 0; i < this.subElements.length; i++) {
             this.subElements[i].changeSorting(sortBy, ascending);
         }
     }
